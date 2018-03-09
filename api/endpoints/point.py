@@ -1,5 +1,5 @@
 """Module for Points Resources."""
-from api.auth import roles_required, token_required
+from ..utils.auth import roles_required, token_required
 from api.models import Activity, Point, Society, User
 from flask import g
 from flask_restplus import Resource, reqparse

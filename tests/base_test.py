@@ -42,33 +42,38 @@ class BaseTestCase(TestCase):
         self.header = {
             "Authorization": self.generate_token(self.test_payload)
         }
+        self.bad_token_header = {
+            "Authorization": self.generate_token(
+                {"I don't know": "what to put here"}
+            )
+        }
 
         # mock user
-        self.member = User(email="someonecool.andela.com",
+        self.member = User(email="someone.cool@andela.com",
                            name="thecoolest",
                            uuid="-Ksomeid",
                            role="member",
-                           country="ke/ug/niger/ny/sa/tz/rw")
+                           country="Kenya")
 
-        self.admin = User(email="coolAdmin.andela.com",
+        self.admin = User(email="cool.admin@andela.com",
                           name="thecoolestAdmin",
                           uuid="-KsomeidAdmin",
                           role="admin",
-                          country="ke/ug/niger/ny/sa/tz/rw")
+                          country="Nigeria")
 
         # mock societies
         self.istelle = Society(name="istelle",
-                               photo="url/imgae",
+                               photo="url/image",
                                logo="url/image",
                                color_scheme="#00ff4567")
 
         self.sparks = Society(name="sparks",
-                              photo="url/imgae",
+                              photo="url/image",
                               logo="url/image",
                               color_scheme="#00ff4567")
 
         self.phenix = Society(name="phenix",
-                              photo="url/imgae",
+                              photo="url/image",
                               logo="url/image",
                               color_scheme="#00ff4567")
         self.phenix.save()

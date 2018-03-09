@@ -3,7 +3,9 @@ Sample Data for Initial Run.
 
 This contains the sample initial data required for the test run of the system.
 """
-from .models import Activity, Point, Society, User
+
+from ..models import Activity, Point, Society, User
+
 
 # activities
 interview = Activity(name="Bootcamp Interviews",
@@ -47,7 +49,7 @@ outside_mentoring = Activity(name="External Mentoring",
                                          " e.g. via SheLovesCode",
                              value=250)
 
-# socities
+# societies
 phoenix = Society(name="Phoenix")
 istelle = Society(name="iStelle")
 sparks = Society(name="Sparks")
@@ -56,13 +58,13 @@ invictus = Society(name="Invictus")
 # test user
 user = User(
     uuid="-KdQsMt2U0ixIy_-yJEH",
-    name="Larry Wachira",
+    name="Test User",
     photo="https://lh6.googleusercontent.com/-1DhBLOJentg/AAAAAAAAA"
           "AI/AAAAAAAAABc/ImM13eP_cAI/photo.jpg?sz=50",
-    email="lawrence.wachira@andela.com",
+    email="test.user@andela.com",
     country="Kenya",
     society=phoenix
-    )
+)
 user.activities.extend([blog, interview, open_saturdays])
 
 # points for each activity

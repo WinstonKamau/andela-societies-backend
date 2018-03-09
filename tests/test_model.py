@@ -79,6 +79,6 @@ class ActivityTestCase(BaseTestCase):
 
         self.assertTrue(activity.save())
 
-        querty_activity = Activity.query.filter_by(name="Interview").first()
+        query_activity = Activity.query.filter_by(name="Interview").first()
 
-        self.assertTrue(activity == querty_activity)
+        self.assertTrue(activity == query_activity)
