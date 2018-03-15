@@ -105,4 +105,8 @@ ENV/
 .vscode/
 test_db.sqlite
 
+# Database Stuff
+*.sqlite
+*.
+
 migrations/*
