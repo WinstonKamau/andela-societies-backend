@@ -157,6 +157,8 @@ class Point(Base):
         return '<Point by {}>'.format(self.user)
 
 class Roles(Base):
-    """ Model roles to be used in the application """
+    """Model roles to be used in the application."""
 
     __tablename__ = 'roles'
+    role_id = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
