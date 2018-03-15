@@ -89,7 +89,8 @@ class RolesTestCase(BaseTestCase):
 
     def test_role_instance(self):
         """Test role properties/relationships."""
-        role = Roles(name="Success")
+        role = Roles(name="Success",
+                     role_id="-Ksomerandomid")
         self.assertTrue(role.save())
 
         query_role = Roles.query.filter_by(name="Success").first()
