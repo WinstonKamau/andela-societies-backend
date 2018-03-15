@@ -83,10 +83,12 @@ class ActivityTestCase(BaseTestCase):
 
         self.assertTrue(activity == querty_activity)
 
+
 class RolesTestCase(BaseTestCase):
-    """ Test Roles model """
+    """Test Roles model."""
 
     def test_role_instance(self):
+        """Test role properties/relationships."""
         role = Roles(name="Success")
         self.assertTrue(role.save())
 
