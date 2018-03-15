@@ -8,6 +8,7 @@ class UserTestCase(BaseTestCase):
     """Test models."""
 
     def test_models(self):
+        """Test user & society data persistence."""
         society = Society(
             name="Phoenix",
             color_scheme="#333333",
