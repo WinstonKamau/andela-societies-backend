@@ -3,7 +3,7 @@ Sample Data for Initial Run.
 
 This contains the sample initial data required for the test run of the system.
 """
-from .models import Activity, Point, Society, User
+from .models import Activity, Point, Society, User, Roles, db
 
 # activities
 interview = Activity(name="Bootcamp Interviews",
@@ -52,6 +52,14 @@ phoenix = Society(name="Phoenix")
 istelle = Society(name="iStelle")
 sparks = Society(name="Sparks")
 invictus = Society(name="Invictus")
+
+#roles
+roles = [Roles(uuid="-KXGy1EB1oimjQgFim6F", name="Success"),
+        Roles(uuid="-KXGy1EB1oimjQgFim6L", name="Finance"),
+        Roles(uuid="-KXGy1EB1oimjQgFim6C", name="Fellow"),
+        Roles(uuid="-KkLwgbeJUO0dQKsEk1i", name="Success Ops"),
+        Roles(uuid="-KiihfZoseQeqC6bWTau", name="Andelan")]
+
 
 # test user
 user = User(

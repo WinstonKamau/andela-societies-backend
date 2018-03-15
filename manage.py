@@ -8,7 +8,7 @@ import pytest
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell, prompt_bool
 
-from api.initial_data import all_data
+from api.initial_data import all_data, roles
 from api.models import Activity, Point, Society, User, db
 from app import create_app
 
@@ -48,6 +48,7 @@ def seed():
             db.drop_all()
             db.create_all()
             db.session.add_all(all_data)
+            db.session.add_all(roles)
             print("\n\n\nTables seeded successfully.\n\n\n")
         except Exception:
             db.session.rollback()

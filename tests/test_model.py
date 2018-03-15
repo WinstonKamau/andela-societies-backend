@@ -1,6 +1,6 @@
 """Models TestSuite."""
 
-from api.models import Activity, Point, Society, User
+from api.models import Activity, Point, Society, User, Roles
 from tests.base_test import BaseTestCase
 
 
@@ -82,3 +82,13 @@ class ActivityTestCase(BaseTestCase):
         querty_activity = Activity.query.filter_by(name="Interview").first()
 
         self.assertTrue(activity == querty_activity)
+
+class RolesTestCase(BaseTestCase):
+    """ Test Roles model """
+
+    def test_role_instance(self):
+        role = Roles(name="Success")
+        self.assertTrue(role.save())
+
+        query_role = Roles.query.filter_by(name="Success").first()
+        self.assertTrue(query_role)
