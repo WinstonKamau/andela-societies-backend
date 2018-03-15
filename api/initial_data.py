@@ -53,12 +53,12 @@ istelle = Society(name="iStelle")
 sparks = Society(name="Sparks")
 invictus = Society(name="Invictus")
 
-#roles
-roles = [Roles(uuid="-KXGy1EB1oimjQgFim6F", name="Success"),
-        Roles(uuid="-KXGy1EB1oimjQgFim6L", name="Finance"),
-        Roles(uuid="-KXGy1EB1oimjQgFim6C", name="Fellow"),
-        Roles(uuid="-KkLwgbeJUO0dQKsEk1i", name="Success Ops"),
-        Roles(uuid="-KiihfZoseQeqC6bWTau", name="Andelan")]
+# roles
+roles = [Roles(role_id="-KXGy1EB1oimjQgFim6F", name="Success"),
+         Roles(role_id="-KXGy1EB1oimjQgFim6L", name="Finance"),
+         Roles(role_id="-KXGy1EB1oimjQgFim6C", name="Fellow"),
+         Roles(role_id="-KkLwgbeJUO0dQKsEk1i", name="Success Ops"),
+         Roles(role_id="-KiihfZoseQeqC6bWTau", name="Andelan")]
 
 
 # test user
