@@ -156,7 +156,7 @@ class Point(Base):
     def __repr__(self):
         return '<Point by {}>'.format(self.user)
 
-class Roles(Base):
+class Role(Base):
     """Model roles to be used in the application."""
 
     __tablename__ = 'roles'

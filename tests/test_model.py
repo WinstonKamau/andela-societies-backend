@@ -1,6 +1,6 @@
 """Models TestSuite."""
 
-from api.models import Activity, Point, Society, User, Roles
+from api.models import Activity, Point, Society, User, Role
 from tests.base_test import BaseTestCase
 
 
@@ -85,14 +85,14 @@ class ActivityTestCase(BaseTestCase):
         self.assertTrue(activity == querty_activity)
 
 
-class RolesTestCase(BaseTestCase):
-    """Test Roles model."""
+class RoleTestCase(BaseTestCase):
+    """Test Role model."""
 
     def test_role_instance(self):
         """Test role properties/relationships."""
-        role = Roles(name="Success",
-                     role_id="-Ksomerandomid")
+        role = Role(name="Success",
+                    role_id="-Ksomerandomid")
         self.assertTrue(role.save())
 
-        query_role = Roles.query.filter_by(name="Success").first()
+        query_role = Role.query.filter_by(name="Success").first()
         self.assertTrue(query_role)

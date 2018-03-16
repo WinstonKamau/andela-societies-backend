@@ -3,7 +3,7 @@ Sample Data for Initial Run.
 
 This contains the sample initial data required for the test run of the system.
 """
-from .models import Activity, Point, Society, User, Roles, db
+from .models import Activity, Point, Society, User, Role, db
 
 # activities
 interview = Activity(name="Bootcamp Interviews",
@@ -47,18 +47,18 @@ outside_mentoring = Activity(name="External Mentoring",
                                          " e.g. via SheLovesCode",
                              value=250)
 
-# socities
+# societies
 phoenix = Society(name="Phoenix")
 istelle = Society(name="iStelle")
 sparks = Society(name="Sparks")
 invictus = Society(name="Invictus")
 
 # roles
-roles = [Roles(role_id="-KXGy1EB1oimjQgFim6F", name="Success"),
-         Roles(role_id="-KXGy1EB1oimjQgFim6L", name="Finance"),
-         Roles(role_id="-KXGy1EB1oimjQgFim6C", name="Fellow"),
-         Roles(role_id="-KkLwgbeJUO0dQKsEk1i", name="Success Ops"),
-         Roles(role_id="-KiihfZoseQeqC6bWTau", name="Andelan")]
+roles = [Role(role_id="-KXGy1EB1oimjQgFim6F", name="Success"),
+         Role(role_id="-KXGy1EB1oimjQgFim6L", name="Finance"),
+         Role(role_id="-KXGy1EB1oimjQgFim6C", name="Fellow"),
+         Role(role_id="-KkLwgbeJUO0dQKsEk1i", name="Success Ops"),
+         Role(role_id="-KiihfZoseQeqC6bWTau", name="Andelan")]
 
 
 # test user
