@@ -34,6 +34,12 @@ def token_required(f):
                        " invalid"
         })
         unauthorized_response.status_code = 401
+
+        invalid_response = jsonify({
+            "message": "Bad request. The information supplied is invalid."
+        })
+        invalid_response.status_code = 400
+
         expired_response = jsonify({
             "message": "The authorization token supplied is expired"
         })
@@ -62,9 +68,10 @@ def token_required(f):
         }
 
         # confirm that payload and UserInfo has required keys
-        if ("UserInfo" and "exp") not in payload.keys() and payload[
-                "UserInfo"].keys() != expected_user_info_format.keys():
-            return unauthorized_response
+        if ("UserInfo" and "exp") not in payload.keys():
+            return invalid_response
+        elif payload["UserInfo"].keys() != expected_user_info_format.keys():
+            return invalid_response
         else:
             uuid = payload["UserInfo"]["id"]
             name = payload["UserInfo"]["name"]
