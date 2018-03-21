@@ -170,6 +170,9 @@ class Activity(Base):
     __tablename__ = 'activities'
     activity_type_id = db.Column(db.String,
                                  db.ForeignKey('activity_types.uuid'))
+    activity_date = db.Column(db.Date)
+    added_by = db.Column(db.String,
+                         db.ForeignKey('users.uuid'))
 
 
 class LoggedActivity(Base):

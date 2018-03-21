@@ -116,6 +116,7 @@ class BaseTestCase(TestCase):
         self.tech_event = ActivityType(name="Tech Event",
                                        description="Organize a tech event",
                                        value=2500)
+        self.tech_event.save()
 
         # test Activity
         self.alibaba_ai_challenge = Activity(name='Fashion challenge',
@@ -139,6 +140,15 @@ class BaseTestCase(TestCase):
         decoded_key = base64.b64decode(env_key).decode("utf-8")
         token = jwt.encode(payload, decoded_key, algorithm="RS256")
         return token
+
+    @staticmethod
+    def get_activity_type_id(name):
+        """Get activity type id using its name."""
+        activity_type = ActivityType.query.filter_by(
+                        name=name).first()
+        activity_type_id = activity_type.uuid
+
+        return activity_type_id
 
     def tearDown(self):
         """Clean up after every test."""
