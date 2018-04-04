@@ -5,6 +5,7 @@ from api.endpoints.activity_types import ActivityTypesAPI
 from api.endpoints.activities import ActivitiesAPI
 from api.endpoints.societies import SocietyResource
 from api.endpoints.users import UserAPI
+from api.endpoints.logged_activities import UserLoggedActivitiesAPI
 from api.models import db
 from flask import Flask, jsonify
 from flask_cors import CORS
@@ -55,6 +56,14 @@ def create_app(environment="Development"):
     api.add_resource(
         ActivityTypesAPI, '/api/v1/activity-types',
         '/api/v1/activity-types/', endpoint='get_activity_types'
+    )
+
+    # logged activities
+    api.add_resource(
+        UserLoggedActivitiesAPI,
+        '/api/v1/users/<string:user_id>/logged-activities',
+        '/api/v1/users/<string:user_id>/logged-activities',
+        endpoint='get_user_logged_activities'
     )
 
     # user endpoints

@@ -107,7 +107,17 @@ class BaseTestCase(TestCase):
             email="test.user@andela.com",
             country=self.nigeria,
             cohort=self.cohort_1_Nig,
-            society=self.phoenix)
+            society = self.phoenix)
+
+        self.test_user_2 = User(
+            uuid="-KdQsawesome_useridZ",
+            name="Test User 2",
+            photo="https://lh6.googleusercontent.com/-1DhBLOJentg/AAAAAAAAA"
+                  "AI/AAAAAAAAABc/ImM13eP_cAI/photo.jpg?sz=50",
+            email="test.user2@andela.com",
+            country=self.nigeria,
+            cohort=self.cohort_12_Ke,
+            society=self.sparks)
 
         # test ActivityType
         self.hackathon = ActivityType(name="Hackathon",

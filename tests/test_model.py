@@ -120,7 +120,7 @@ class SocietyTestCase(BaseTestCase):
 
         self.assertListEqual(
             societies,
-            [self.phoenix, self.istelle,  self.sparks, self.invictus])
+            [self.phoenix, self.sparks, self.istelle, self.invictus])
 
 
 class ActivityTestCase(BaseTestCase):
@@ -179,7 +179,8 @@ class LoggedActivityTestCase(BaseTestCase):
         self.log_alibaba_challenge.save()
 
         self.assertListEqual(
-            self.phoenix.logged_activities, [self.log_alibaba_challenge])
+            self.phoenix.logged_activities.all(), [self.log_alibaba_challenge]
+        )
 
 
 class CohortTestCase(BaseTestCase):

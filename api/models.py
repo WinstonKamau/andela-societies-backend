@@ -124,9 +124,10 @@ class User(Base):
     country_id = db.Column(db.String, db.ForeignKey('countries.uuid'))
     cohort_id = db.Column(db.String, db.ForeignKey('cohorts.uuid'))
 
-    logged_activities = db.relationship('LoggedActivity',
-                                        backref='user',
-                                        lazy='dynamic')
+    logged_activities = db.relationship(
+        'LoggedActivity', backref='user', lazy = 'dynamic',
+        order_by = 'desc(LoggedActivity.created_at)'
+    )
     activities = db.relationship('Activity',
                                  secondary='user_activity',
                                  lazy='dynamic',
@@ -143,7 +144,8 @@ class Society(Base):
     _total_points = db.Column(db.Integer, default=0)
 
     members = db.relationship('User', backref='society', lazy='dynamic')
-    logged_activities = db.relationship('LoggedActivity', backref='society')
+    logged_activities = db.relationship('LoggedActivity', backref='society',
+                                        lazy='dynamic')
 
     @property
     def total_points(self):
@@ -178,11 +180,12 @@ class LoggedActivity(Base):
     __tablename__ = 'logged_activities'
     value = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String, default='pending')
-    approver_id = db.Column(db.String)
     approved_at = db.Column(db.DateTime)
 
+    approver_id = db.Column(db.String)
     user_id = db.Column(db.String, db.ForeignKey('users.uuid'))
     society_id = db.Column(db.String, db.ForeignKey('societies.uuid'))
     activity_id = db.Column(db.String, db.ForeignKey('activities.uuid'))
 
-    activity = db.relationship('Activity', uselist=False)
+    activity = db.relationship(
+        'Activity', backref='logged_activities', uselist=False)
