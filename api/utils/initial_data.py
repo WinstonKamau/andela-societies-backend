@@ -59,36 +59,39 @@ kenya = Country(name='Kenya')
 
 # test user
 user = User(
-    uuid="-KdQsMt2U0ixIy_-yJEH",
+    uuid="-KdQsMtixI2U0y_-yJEH",
     name="Test User",
     photo="https://lh6.googleusercontent.com/-1DhBLOJentg/AAAAAAAAA"
-          "AI/AAAAAAAAABc/ImM13eP_cAI/photo.jpg?sz=50",
-    email="lawrence.wachira@andela.com",
+          "AI/AAAAAAAAABc/ImeP_cAI/photo.jpg?sz=50",
+    email="test.user.societies@andela.com",
     country=kenya,
     society=phoenix
 )
 
 # test activities
-python_blog = Activity(name="TDD For The Lazy Programmer", activity_type=blog)
+python_hackathon = Activity(name="Hacktober Fest", activity_type=hackathon)
 interview_2017 = Activity(name="2017-feb-bootcamp-17", activity_type=interview)
 open_saturdays_2018 = Activity(name="2018-feb-meetup",
                                activity_type=open_saturdays)
 
-user.activities.extend([python_blog, interview_2017, open_saturdays_2018])
+user.activities.extend([python_hackathon, interview_2017, open_saturdays_2018])
 
 # LoggingActivity
-blog_points = LoggedActivity(value=blog.value,
-                             activity=python_blog,
-                             user=user)
+hackathon_points = LoggedActivity(value=hackathon.value,
+                                  activity=python_hackathon,
+                                  user=user, society=phoenix,
+                                  activity_type=hackathon)
 interview_points = LoggedActivity(value=interview.value,
                                   activity=interview_2017,
-                                  user=user)
+                                  user=user, society=sparks,
+                                  activity_type=interview)
 open_saturday_points = LoggedActivity(value=open_saturdays.value,
                                       activity=open_saturdays_2018,
-                                      user=user)
+                                      user=user, society=invictus,
+                                      activity_type=open_saturdays)
 
 
 all_data = [interview, open_saturdays, tech_event, open_source, hackathon,
             blog, app, mentor, marketing, press, outside_mentoring, phoenix,
-            istelle, sparks, invictus, user, blog_points, interview_points,
+            istelle, sparks, invictus, user, hackathon_points, interview_points,
             open_saturday_points]

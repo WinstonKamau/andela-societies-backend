@@ -38,7 +38,7 @@ class Base(db.Model):
     name = db.Column(db.String)
     photo = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    modified_at = db.Column(db.DateTime, default=datetime.utcnow)
+    modified_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
     description = db.Column(db.String)
 
     def __repr__(self):
@@ -178,11 +178,17 @@ class LoggedActivity(Base):
     __tablename__ = 'logged_activities'
     value = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String, default='pending')
-    approver_id = db.Column(db.String)
     approved_at = db.Column(db.DateTime)
 
-    user_id = db.Column(db.String, db.ForeignKey('users.uuid'))
-    society_id = db.Column(db.String, db.ForeignKey('societies.uuid'))
+    approver_id = db.Column(db.String)
+    activity_type_id = db.Column(
+        db.String, db.ForeignKey('activity_types.uuid'), nullable=False
+    )
+    user_id = db.Column(db.String, db.ForeignKey('users.uuid'), nullable=False)
+    society_id = db.Column(
+        db.String, db.ForeignKey('societies.uuid'), nullable=False,
+    )
     activity_id = db.Column(db.String, db.ForeignKey('activities.uuid'))
 
     activity = db.relationship('Activity', uselist=False)
+    activity_type = db.relationship('ActivityType', uselist=False)

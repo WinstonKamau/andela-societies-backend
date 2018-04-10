@@ -163,7 +163,9 @@ class LoggedActivityTestCase(BaseTestCase):
             value=2500,
             user=self.test_user,
             activity=self.alibaba_ai_challenge,
-            society=self.phoenix)
+            society=self.phoenix,
+            activity_type=self.hackathon
+        )
 
         self.assertTrue(log_alibaba_challenge.save())
 

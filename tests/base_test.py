@@ -20,7 +20,7 @@ class BaseTestCase(TestCase):
         "UserInfo": {
             "email": "test.test@andela.com",
             "first_name": "test",
-            "id": "-Ktest_id",
+            "id": "-KdQsMt2U0ixIy_-yWTSZ",
             "last_name": "test",
             "name": "test test",
             "picture": "https://www.link.com",
@@ -74,7 +74,8 @@ class BaseTestCase(TestCase):
         self.client = self.app.test_client()
 
         self.header = {
-            "Authorization": self.generate_token(self.test_payload)
+            "Authorization": self.generate_token(self.test_payload),
+            "Content-Type": "application/json"
         }
         self.bad_token_header = {
             "Authorization": self.generate_token(
@@ -116,6 +117,12 @@ class BaseTestCase(TestCase):
         self.tech_event = ActivityType(name="Tech Event",
                                        description="Organize a tech event",
                                        value=2500)
+        self.interview = ActivityType(
+            name="Bootcamp Interviews",
+            description="Interviewing candidate for a fellow"
+            " recruiting event",
+            value=20
+        )
 
         # test Activity
         self.alibaba_ai_challenge = Activity(name='Fashion challenge',
@@ -130,7 +137,8 @@ class BaseTestCase(TestCase):
             value=2500,
             user=self.test_user,
             activity=self.alibaba_ai_challenge,
-            society=self.phoenix)
+            society=self.phoenix,
+            activity_type=self.hackathon)
 
     @staticmethod
     def generate_token(payload):
