@@ -27,6 +27,7 @@ function addEnvFile() {
 
     if [ ! -f "$ENV_FILE" ]; then
           cat <<EOF >> ${ROOT_DIRECTORY}/src/.env
+APP_SETTINGS=${APP_SETTINGS}
 PRIVATE_KEY_TEST=${PRIVATE_KEY_TEST}
 PUBLIC_KEY_TEST=${PUBLIC_KEY_TEST}
 EOF

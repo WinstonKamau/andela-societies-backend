@@ -11,7 +11,6 @@ load_dotenv(dotenv_path)
 class Config(object):
     """Model base config object that can inherited by other configs."""
 
-    SECRET_KEY = os.environ.get('SECRET') or "secretkey"
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
