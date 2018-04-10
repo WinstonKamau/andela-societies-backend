@@ -18,11 +18,11 @@ class BaseTestCase(TestCase):
     exp_date = datetime.datetime.utcnow()
     test_payload = {
         "UserInfo": {
-            "email": "test.test@andela.com",
+            "email": "test.user@andela.com",
             "first_name": "test",
-            "id": "-Ktest_id",
-            "last_name": "test",
-            "name": "test test",
+            "id": "-KdQsMt2U0ixIy_-yWTSZ",
+            "last_name": "user",
+            "name": "test user",
             "picture": "https://www.link.com",
             "roles": {
                     "Andelan": "-Ktest_andelan_id",
