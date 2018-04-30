@@ -37,7 +37,7 @@ workflows:
       - test
   deploy:
     jobs:
-      - deploy
+      - deploy:
           requires:
             - test
           filters:
