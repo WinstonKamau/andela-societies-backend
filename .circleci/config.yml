@@ -20,8 +20,21 @@ jobs:
           path: test-reports
           destination: test-reports
 
+  deploy:
+    <<: *defaults
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: deploy application
+          command: |
+            bash .circleci/deploy.sh
+
 workflows:
   version: 2
-  build_and_test:
+  test:
     jobs:
       - test
+  deploy:
+    jobs:
+      - deploy
+      
