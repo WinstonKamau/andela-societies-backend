@@ -16,6 +16,7 @@ services:
     env_file:
       - ../../src/.env
     command:
+      - /etc/init.d/rabbitmq-server start
       - gunicorn
       - -b 0.0.0.0:8000
       - -w 5

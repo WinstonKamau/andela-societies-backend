@@ -67,6 +67,9 @@ release:env_file
 	${INFO} "Building required container image for the application"
 	@ echo " "
 	@ docker-compose -p $(DOCKER_REL_PROJECT) -f $(DOCKER_REL_COMPOSE_FILE) build app
+	${INFO} "Running database migrations..."
+	@ docker-compose -p $(DOCKER_REL_PROJECT) -f $(DOCKER_REL_COMPOSE_FILE) run --rm app python manage.py db upgrade -d prod_migrations 
+
 	@ docker-compose -p $(DOCKER_REL_PROJECT) -f $(DOCKER_REL_COMPOSE_FILE) run -d app
 	
 ## Tag the project image
