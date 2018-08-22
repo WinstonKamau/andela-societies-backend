@@ -133,7 +133,7 @@ class PointRedemptionAPI(Resource):
     @classmethod
     @token_required
     @roles_required(["finance", "cio", "society president", "vice president",
-                     "secretary, success ops"])
+                     "secretary", "success ops"])
     def get(cls, redeem_id=None):
         """Get Redemption Requests."""
         if redeem_id:
