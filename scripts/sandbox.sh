@@ -29,6 +29,35 @@ function installDocker() {
     fi
 }
 
+function checkPackages() {
+    declare -a packages=("$@")
+    for package in "${packages[@]}"; do
+        if [[ -n "$(which ${package})" ]]; then
+            echo "${package} installed"
+        else
+            install "${package}"
+        fi
+    done
+}
+
+function install {
+    case $1 in
+        "kubectl")
+            brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/357ba36ac39a9a60f2a53e9452db8ad3e305e7bc/Formula/kubernetes-cli.rb ;;
+        "brew")
+            echo "${YELLOW}====> Installing brew${WHITE}"
+            /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";;
+        "minikube")
+            brew cask install https://raw.githubusercontent.com/Homebrew/homebrew-cask/a9c48c546066b4846ff8c73655634e96b645ed2d/Casks/minikube.rb;;
+        "docker")
+            brew cask install https://raw.githubusercontent.com/Homebrew/homebrew-cask/4bbea3bf6e453b35079848e4f77c75d45ae38502/Casks/docker.rb;;
+        "virtualbox")
+            brew cask install https://raw.githubusercontent.com/Homebrew/homebrew-cask/2213260d720c1f3128d801309a57d9a1a82facd2/Casks/virtualbox.rb;;
+        *)
+            echo "${RED}====> Invalid option selected${WHITE}"
+    esac
+}
+
 function checkFrontend() {
     if [ -n "$(docker container ps -q --filter "name=soc_frontend_1")" ];then
         echo "${GREEN}====> The Frontend application is running${WHITE}"
@@ -39,8 +68,8 @@ function checkFrontend() {
 }
 
 function configureHosts() {
-    IP="127.0.0.1"
-    HOST="api-soc-sandbox.andela.com"
+    IP="$2"
+    HOST="$1"
     STATE=$(grep -c "${IP}\\t${HOST}" /etc/hosts)
     if [ "$STATE" -eq 1 ];then
         echo "${GREEN}====> Backend host ${HOST} already exists on this machine.${WHITE}"

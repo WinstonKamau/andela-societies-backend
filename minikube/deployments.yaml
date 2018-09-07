@@ -1,0 +1,142 @@
+# Backend Deployment
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: sandbox-soc-backend
+  labels:
+    app: soc-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: soc-backend
+  template:
+    metadata:
+      labels:
+        app: soc-backend
+    spec:
+      containers:
+        - name: backend
+          image: "soc-backend:sandbox"
+          imagePullPolicy: IfNotPresent
+          args: [ "gunicorn", "-b 0.0.0.0:8000", "manage:app"]
+          env:
+            - name: APP_SETTINGS
+              valueFrom:
+                secretKeyRef:
+                  key: AppSettings
+                  name: sandbox-soc-secrets
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  key: DatabaseUrl
+                  name: sandbox-soc-secrets
+            - name: PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: PublicKey
+                  name: sandbox-soc-secrets
+            - name: ANDELA_API_URL
+              valueFrom:
+                secretKeyRef:
+                  key: AndelaApiUrl
+                  name: sandbox-soc-secrets
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PostgresPassword
+                  name: sandbox-soc-secrets
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: PostgresUser
+                  name: sandbox-soc-secrets
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  key: PostgresDatabase
+                  name: sandbox-soc-secrets
+
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 130
+            timeoutSeconds: 60
+            periodSeconds: 120
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 120
+            successThreshold: 1
+            timeoutSeconds: 60
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+---
+# Database image
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: sandbox-soc-database
+  labels:
+    app: soc-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: soc-database
+  template:
+    metadata:
+      labels:
+        app: soc-database
+    spec:
+      containers:
+        - name: database
+          image: "postgres:9.6"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PostgresPassword
+                  name: sandbox-soc-secrets
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: PostgresUser
+                  name: sandbox-soc-secrets
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  key: PostgresDatabase
+                  name: sandbox-soc-secrets
+          ports:
+            - name: http
+              containerPort: 5432
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 130
+            timeoutSeconds: 60
+            periodSeconds: 120
+          readinessProbe:
+            tcpSocket:
+              port: 5432
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 120
+            successThreshold: 1
+            timeoutSeconds: 60
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi

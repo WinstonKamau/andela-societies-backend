@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sandbox-ingress
+  labels:
+    app: ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
+spec:
+  tls:
+    - hosts:
+      secretName: sandbox-ingress-secrets
+  rules:
+    - host: sandbox.andela.com
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: sandbox-soc-frontend
+              servicePort: http
+    - host: sandbox-api.andela.com
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: sandbox-soc-backend
+              servicePort: http

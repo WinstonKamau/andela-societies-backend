@@ -46,6 +46,25 @@ env_file:
 	@ chmod +x scripts/utils.sh && scripts/utils.sh addEnvFile
 	@ echo " "
 
+## Start minikube
+start-m:tear-m
+	@ chmod +x scripts/sandbox.sh && scripts/sandbox.sh checkPackages "brew" "minikube" "kubectl" "docker" "virtualbox"
+	@ chmod +x scripts/minikube.sh && scripts/minikube.sh main
+	@ echo "${YELLOW}====> Managing host for the backend on minikube${WHITE}"
+	@ chmod +x scripts/sandbox.sh && scripts/sandbox.sh configureHosts "sandbox-api.andela.com" $$(minikube ip)
+	@ open http://sandbox-api.andela.com
+
+deploy-m:
+	@ chmod +x scripts/minikube.sh && scripts/minikube.sh deployBackend 
+
+## Tear down minikube
+tear-m:
+	@ chmod +x scripts/minikube.sh && scripts/minikube.sh tearDown
+
+## Seed the database for minikube
+seed-m:
+	@ chmod +x scripts/minikube.sh && scripts/minikube.sh seedDatabase
+
 ## Start the backend application
 start:status
 	@ echo "${YELLOW}====> Building the andela societies backend image.${WHITE}"
@@ -65,12 +84,12 @@ start:status
 
 ## Manage the backend host and checking the frontend application
 status:
-	@ chmod +x scripts/sandbox.sh && scripts/sandbox.sh checkDocker
+	@ chmod +x scripts/minikube.sh && scripts/minikube.sh checkPackages "brew" "docker"
 	@ echo "${YELLOW}====> Checking the frontend containers${WHITE}"
 	@ chmod +x scripts/sandbox.sh && scripts/sandbox.sh checkFrontend
 	@ echo "${YELLOW}====> End of frontend check${WHITE}"
 	@ echo "${YELLOW}====> Managing host for the backend${WHITE}"
-	@ chmod +x scripts/sandbox.sh && scripts/sandbox.sh configureHosts
+	@ chmod +x scripts/sandbox.sh && scripts/sandbox.sh configureHosts "api-soc-sandbox.andela.com" "127.0.0.1"
 
 ## Stop the backend application
 stop:
@@ -190,6 +209,7 @@ SUCCESS := @bash -c 'printf $(GREEN); echo "===> $$1"; printf $(NC)' SOME_VALUE
 APP_CONTAINER_ID := $$(docker-compose -p $(DOCKER_REL_PROJECT) -f $(DOCKER_REL_COMPOSE_FILE) ps -q $(APP_SERVICE_NAME))
 
 IMAGE_ID := $$(docker inspect -f '{{ .Image }}' $(APP_CONTAINER_ID))
+
 
 # Introspect repository tags
 REPO_EXPR := $$(docker inspect -f '{{range .RepoTags}}{{.}} {{end}}' $(IMAGE_ID) | grep -oh "$(REPO_FILTER)" | xargs)
