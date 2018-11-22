@@ -13,8 +13,35 @@ declare_env_variables() {
   # DEPLOYMENT_CHANNEL : This is the channel on which the Slack notifications will be posted
   # MESSAGE_TEXT: The text to be sent to the slack channel
   # Some template for the Slack message
-  MESSAGE_TEXT="$1"
+
   MESSAGE_COLOR="$2"
+
+  case "$MESSAGE_COLOR" in
+    good)
+      MESSAGE_STATUS="was upgraded successfully"
+        ;;
+    danger)
+      MESSAGE_STATUS="upgrade failed!!!"
+        ;;
+    *)
+        echo "Err: Wrong argument provided for the message color."
+        exit 1
+        ;;
+  esac
+
+  case "$1" in
+    master)
+      MESSAGE_TEXT="Production database $MESSAGE_STATUS"
+        ;;
+    develop)
+      MESSAGE_TEXT="Staging database $MESSAGE_STATUS"
+        ;;
+    *)
+      MESSAGE_TEXT="Wrong branch *$1* provided for upgrading the database."
+      MESSAGE_COLOR="danger"
+        ;;
+  esac
+  
 
   COMMIT_LINK="https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/commit/${CIRCLE_SHA1}"
   IMG_TAG="$(git rev-parse --short HEAD)"

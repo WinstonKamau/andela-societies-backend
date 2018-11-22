@@ -36,14 +36,14 @@ jobs:
           when: on_success
           command: |
             if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-                bash scripts/slack_notification.sh "Staging database was upgraded successfully" "good"
+                bash scripts/slack_notification.sh "${CIRCLE_BRANCH}" "good"
             fi
       - run:
           name: Build Failed
           when: on_fail
           command: |
             if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-                bash scripts/slack_notification.sh "Staging database upgrade failed!!!" "danger"
+                bash scripts/slack_notification.sh "${CIRCLE_BRANCH}" "danger"
             fi
 
   deploy-staging:
@@ -108,6 +108,7 @@ workflows:
             branches:
               only:
                 - develop
+                - master
       - deploy-staging:
           requires:
             - upgrade-database
@@ -117,7 +118,7 @@ workflows:
                 - develop
       - deploy-master:
           requires:
-            - test
+            - upgrade-database
           filters:
             branches:
               only:
