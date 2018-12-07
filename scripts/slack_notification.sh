@@ -15,7 +15,8 @@ declare_env_variables() {
   # Some template for the Slack message
 
   MESSAGE_COLOR="$2"
-
+  echo "$CIRCLE_BRANCH"
+  echo "$CIRCLE_JOB"
   case "$MESSAGE_COLOR" in
     good)
       MESSAGE_STATUS="was upgraded successfully"
