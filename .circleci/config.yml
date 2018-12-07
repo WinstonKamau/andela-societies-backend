@@ -55,7 +55,9 @@ jobs:
       - run:
           name: deploy application
           command: |
-            bash scripts/deploy.sh
+            # bash scripts/deploy.sh
+            echo "Passed here"
+            echo "$CIRCLE_JOB"
       - run:
           name: Build Success
           when: on_success
@@ -80,7 +82,8 @@ jobs:
       - run:
           name: deploy application
           command: |
-            bash scripts/deploy.sh
+            # bash scripts/deploy.sh
+            echo "Passed here"
       - run:
           name: Build Success
           when: on_success
@@ -100,25 +103,26 @@ workflows:
   version: 2
   test_and_deploy:
     jobs:
-      - test
-      - upgrade-database:
-          requires:
-            - test
-          filters:
-            branches:
-              only:
-                - develop
-                - master
+      # - test
+      # - upgrade-database:
+      #     requires:
+      #       - test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - master
       - deploy-staging:
-          requires:
-            - upgrade-database
+          # requires:
+          #   - upgrade-database
           filters:
             branches:
               only:
                 - develop
+                - ft-database-backup-159519407
       - deploy-master:
-          requires:
-            - upgrade-database
+          # requires:
+          #   - upgrade-database
           filters:
             branches:
               only:
