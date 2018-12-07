@@ -57,7 +57,7 @@ jobs:
           command: |
             # bash scripts/deploy.sh
             echo "Passed here"
-            echo "$CIRCLE_JOB"
+            echo "${CIRCLE_JOB}"
       - run:
           name: Build Success
           when: on_success
