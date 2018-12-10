@@ -56,7 +56,7 @@ jobs:
           name: deploy application
           command: |
             # bash scripts/deploy.sh
-            opopppo
+            echo "ASdfasdf"
       - run:
           name: Build Success
           when: on_success
