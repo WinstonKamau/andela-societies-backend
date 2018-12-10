@@ -30,8 +30,33 @@ jobs:
       - run:
           name: upgrade database
           command: |
-            # bash scripts/upgrade.sh
-            opopopp
+            bash scripts/upgrade.sh
+      - run:
+          name: Build Success
+          when: on_success
+          command: |
+            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
+                bash scripts/slack_notification.sh "good"
+            fi
+      - run:
+          name: Build Failed
+          when: on_fail
+          command: |
+            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
+                bash scripts/slack_notification.sh "danger"
+            fi
+
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 17.11.0-ce
+      - run:
+          name: deploy application
+          command: |
+            # bash scripts/deploy.sh
+            echo "Passed here"
       - run:
           name: Build Success
           when: on_success
@@ -104,15 +129,23 @@ workflows:
   test_and_deploy:
     jobs:
       # - test
-      - upgrade-database:
+      # - upgrade-database:
           # requires:
           #   - test
+          # filters:
+          #   branches:
+          #     only:
+          #       - develop
+          #       - master
+      - deploy:
+          # requires:
+          #   - upgrade-database
           filters:
             branches:
               only:
                 - develop
-                - master
                 - ft-database-backup-159519407
+                - master
       # - deploy-staging:
           # requires:
           #   - upgrade-database
