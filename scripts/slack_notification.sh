@@ -3,6 +3,57 @@
 set -o errexit
 set -o pipefail
 
+# environment_methods() {
+#     MESSAGE_COLOR="$1"
+#   if []
+#   MESSAGE_STATE=
+
+#   if [ "$CIRCLE_JOB" == "deploy-staging" ]; then
+#     case "$MESSAGE_COLOR" in
+#       good)
+#         MESSAGE_STATUS="was upgraded successfully"
+#           ;;
+#       danger)
+#         MESSAGE_STATUS="upgrade failed!!!"
+#           ;;
+#       *)
+#           echo "Err: Wrong argument provided for the message color."
+#           exit 1
+#           ;;
+#     esac
+
+#     case "$CIRCLE_BRANCH" in
+#       master)
+#         MESSAGE_TEXT="Production database $MESSAGE_STATUS"
+#           ;;
+#       develop)
+#         MESSAGE_TEXT="Staging database $MESSAGE_STATUS"
+#           ;;
+#       *)
+#         MESSAGE_TEXT="Wrong branch *$1* provided for upgrading the database."
+#         MESSAGE_COLOR="danger"
+#           ;;
+#     esac
+#   fi 
+# }
+
+upgrade_database() {
+    MESSAGE_COLOR="$1"
+    if [ "$CIRCLE_BRANCH" == "master" ]; then
+      ENVIRONMENT="Production"
+    else
+      ENVIRONMENT="Staging"
+    fi
+
+    if [ "$MESSAGE_COLOR" == "good" ]; then
+      MESSAGE_TEXT="$ENVIRONMENT database was upgraded successfully"
+    elif [ "$MESSAGE_COLOR" == "danger" ]; then
+      MESSAGE_TEXT="$ENVIRONMENT database upgrade failed!!!"
+    else
+      echo "Warning!: $MESSAGE_COLOR is not a color that was expected to be provided"
+    fi
+}
+
 
 declare_env_variables() {
 
@@ -11,38 +62,11 @@ declare_env_variables() {
   # Some environment variables assigned externally are:
   # SLACK_CHANNEL_HOOK : This is the webhook for the Slack App where notifications will be sent from
   # DEPLOYMENT_CHANNEL : This is the channel on which the Slack notifications will be posted
-  # MESSAGE_TEXT: The text to be sent to the slack channel
   # Some template for the Slack message
 
-  MESSAGE_COLOR="$2"
-  echo "$CIRCLE_BRANCH"
-  echo "$CIRCLE_JOB"
-  case "$MESSAGE_COLOR" in
-    good)
-      MESSAGE_STATUS="was upgraded successfully"
-        ;;
-    danger)
-      MESSAGE_STATUS="upgrade failed!!!"
-        ;;
-    *)
-        echo "Err: Wrong argument provided for the message color."
-        exit 1
-        ;;
-  esac
-
-  case "$1" in
-    master)
-      MESSAGE_TEXT="Production database $MESSAGE_STATUS"
-        ;;
-    develop)
-      MESSAGE_TEXT="Staging database $MESSAGE_STATUS"
-        ;;
-    *)
-      MESSAGE_TEXT="Wrong branch *$1* provided for upgrading the database."
-      MESSAGE_COLOR="danger"
-        ;;
-  esac
-  
+  if [ "$CIRCLE_JOB" == "upgrade-database" ]; then
+    upgrade_database "$@"
+  fi
 
   COMMIT_LINK="https://github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/commit/${CIRCLE_SHA1}"
   IMG_TAG="$(git rev-parse --short HEAD)"

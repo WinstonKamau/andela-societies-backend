@@ -30,20 +30,21 @@ jobs:
       - run:
           name: upgrade database
           command: |
-            bash scripts/upgrade.sh
+            # bash scripts/upgrade.sh
+            echo "Passed Here"
       - run:
           name: Build Success
           when: on_success
           command: |
             if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-                bash scripts/slack_notification.sh "${CIRCLE_BRANCH}" "good"
+                bash scripts/slack_notification.sh "good"
             fi
       - run:
           name: Build Failed
           when: on_fail
           command: |
             if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-                bash scripts/slack_notification.sh "${CIRCLE_BRANCH}" "danger"
+                bash scripts/slack_notification.sh "danger"
             fi
 
   deploy-staging:
@@ -57,7 +58,6 @@ jobs:
           command: |
             # bash scripts/deploy.sh
             echo "Passed here"
-            echo "${CIRCLE_JOB}"
       - run:
           name: Build Success
           when: on_success
@@ -104,26 +104,27 @@ workflows:
   test_and_deploy:
     jobs:
       # - test
-      # - upgrade-database:
-      #     requires:
-      #       - test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - develop
-      #           - master
-      - deploy-staging:
+      - upgrade-database:
           # requires:
-          #   - upgrade-database
+          #   - test
           filters:
             branches:
               only:
                 - develop
+                - master
                 - ft-database-backup-159519407
-      - deploy-master:
+      # - deploy-staging:
           # requires:
           #   - upgrade-database
-          filters:
-            branches:
-              only:
-                - master
+          # filters:
+          #   branches:
+          #     only:
+          #       - develop
+          #       - ft-database-backup-159519407
+      # - deploy-master:
+          # requires:
+          #   - upgrade-database
+          # filters:
+          #   branches:
+          #     only:
+          #       - master
