@@ -6,11 +6,6 @@ set -o pipefail
 
 deploy_env_variables() {
     MESSAGE_COLOR="$1"
-    if [ "$CIRCLE_BRANCH" == "master" ]; then
-      ENVIRONMENT="Production"
-    else
-      ENVIRONMENT="Staging"
-    fi
 
     if [ "$MESSAGE_COLOR" == "good" ]; then
       MESSAGE_TEXT="The $CIRCLE_BRANCH branch has been deployed to the $ENVIRONMENT environment"
@@ -25,11 +20,6 @@ deploy_env_variables() {
 
 upgrade_env_variables() {
     MESSAGE_COLOR="$1"
-    if [ "$CIRCLE_BRANCH" == "master" ]; then
-      ENVIRONMENT="Production"
-    else
-      ENVIRONMENT="Staging"
-    fi
 
     if [ "$MESSAGE_COLOR" == "good" ]; then
       MESSAGE_TEXT="$ENVIRONMENT database was upgraded successfully"
@@ -49,6 +39,12 @@ declare_env_variables() {
   # SLACK_CHANNEL_HOOK : This is the webhook for the Slack App where notifications will be sent from
   # DEPLOYMENT_CHANNEL : This is the channel on which the Slack notifications will be posted
   # Some template for the Slack message
+
+  if [ "$CIRCLE_BRANCH" == "master" ]; then
+      ENVIRONMENT="Production"
+  else
+      ENVIRONMENT="Staging"
+  fi
 
   if [ "$CIRCLE_JOB" == "upgrade-database" ]; then
     upgrade_env_variables "$@"

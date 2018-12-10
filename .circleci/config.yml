@@ -72,58 +72,6 @@ jobs:
                 bash scripts/slack_notification.sh "danger"
             fi
 
-  deploy-staging:
-    <<: *defaults
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 17.11.0-ce
-      - run:
-          name: deploy application
-          command: |
-            # bash scripts/deploy.sh
-            echo "Passed here"
-      - run:
-          name: Build Success
-          when: on_success
-          command: |
-            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-                bash scripts/slack_notification.sh "The develop branch has been deployed to the staging environment" "good"
-            fi
-      - run:
-          name: Build Failed
-          when: on_fail
-          command: |
-            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-                bash scripts/slack_notification.sh "Deployment to staging failed!!!" "danger"
-            fi
-
-  deploy-master:
-    <<: *defaults
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 17.11.0-ce
-      - run:
-          name: deploy application
-          command: |
-            # bash scripts/deploy.sh
-            echo "Passed here"
-      - run:
-          name: Build Success
-          when: on_success
-          command: |
-            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-                bash scripts/slack_notification.sh "The master branch has been deployed to the production environment" "good"
-            fi
-      - run:
-          name: Build Failed
-          when: on_fail
-          command: |
-            if [ "$CIRCLE_NODE_INDEX" == 0 ]; then
-                bash scripts/slack_notification.sh "Deployment to production failed!!!" "danger"
-            fi
-
 workflows:
   version: 2
   test_and_deploy:
@@ -146,18 +94,3 @@ workflows:
                 - develop
                 - ft-database-backup-159519407
                 - master
-      # - deploy-staging:
-          # requires:
-          #   - upgrade-database
-          # filters:
-          #   branches:
-          #     only:
-          #       - develop
-          #       - ft-database-backup-159519407
-      # - deploy-master:
-          # requires:
-          #   - upgrade-database
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
