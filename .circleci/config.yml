@@ -31,7 +31,7 @@ jobs:
           name: upgrade database
           command: |
             # bash scripts/upgrade.sh
-            echo "Passed Here"
+            opopopp
       - run:
           name: Build Success
           when: on_success
