@@ -44,27 +44,27 @@ install_google_cloud_sdk(){
 
 authenticate_google_cloud() {
     echo "====> Store Sand authenticate with service account"
-    echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
+    echo "$GCLOUD_SERVICE_KEY" | base64 --decode > ${HOME}/gcloud-service-key.json
     echo "Configuring Google Cloud Sdk"
     gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-    gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+    gcloud --quiet config set project "${GOOGLE_PROJECT_ID}"
 }
 
 export_data() {
     DUMP_NAME=$(echo "${ENVIRONMENT}" | tr '[:upper:]' '[:lower:]')-sqldumpfile-$(date '+%Y-%m-%d-%H-%M-%S').gz
-    gcloud sql export sql ${INSTANCE_NAME} gs://${SOCIETIES_GCP_BUCKET}/${DUMP_NAME} \
-                            --database=${DATABASE_NAME}
+    gcloud sql export sql "${INSTANCE_NAME}" gs://"${SOCIETIES_GCP_BUCKET}"/"${DUMP_NAME}" \
+                            --database="${DATABASE_NAME}"
 }
 
 
 authorize_docker() {
     echo "====> Store Sand authenticate with service account"
-    echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
+    echo "$GCLOUD_SERVICE_KEY" | base64 --decode > "${HOME}"/gcloud-service-key.json
 
     echo "====> Login to docker registry"
 
 
-    docker login -u _json_key -p "$(cat ${HOME}/gcloud-service-key.json)" https://gcr.io
+    docker login -u _json_key -p "$(cat "${HOME}"/gcloud-service-key.json)" https://gcr.io
 }
 
 logout_docker_google_cloud() {
