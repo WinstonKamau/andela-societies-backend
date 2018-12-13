@@ -40,11 +40,20 @@ declare_env_variables() {
   # DEPLOYMENT_CHANNEL : This is the channel on which the Slack notifications will be posted
   # Some template for the Slack message
 
-  if [ "$CIRCLE_BRANCH" == "master" ]; then
-      ENVIRONMENT="Production"
-  else
-      ENVIRONMENT="Staging"
-  fi
+  case "$CIRCLE_BRANCH" in
+      master)
+        ENVIRONMENT="Production"
+          ;;
+      develop)
+        ENVIRONMENT="Staging"
+          ;;
+      ft-upgrade-design-database-162630016)
+        ENVIRONMENT="Design"
+          ;;
+      *)
+          echo "Err: Wrong branch provided"
+          ;;
+  esac
 
   if [ "$CIRCLE_JOB" == "upgrade-database" ]; then
     upgrade_env_variables "$@"
