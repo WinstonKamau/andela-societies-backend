@@ -10,6 +10,7 @@ set_variables(){
             DATABASE_URL=${PRODUCTION_DATABASE_URL}
             INSTANCE_NAME=${PRODUCTION_INSTANCE_NAME}
             DATABASE_NAME=${PRODUCTION_DATABASE_NAME}
+            ENVIRONMENT=${APP_SETTINGS}
             ;;
         develop)
             APP_SETTINGS="Staging"
@@ -17,6 +18,7 @@ set_variables(){
             DATABASE_URL=${STAGING_DATABASE_URL}
             INSTANCE_NAME=${STAGING_INSTANCE_NAME}
             DATABASE_NAME=${STAGING_DATABASE_NAME}
+            ENVIRONMENT=${APP_SETTINGS}
             ;;
         ft-upgrade-design-database-162630016)
             APP_SETTINGS="Staging"
@@ -24,6 +26,7 @@ set_variables(){
             DATABASE_URL=${DESIGN_DATABASE_URL}
             INSTANCE_NAME=${STAGING_INSTANCE_NAME}
             DATABASE_NAME=${DESIGN_DATABASE_NAME}
+            ENVIRONMENT="Design"
             ;;
         *)
             echo "Err: This branch should not upgrade."
@@ -48,7 +51,7 @@ authenticate_google_cloud() {
 }
 
 export_data() {
-    DUMP_NAME=$(echo "${APP_SETTINGS}" | tr '[:upper:]' '[:lower:]')-sqldumpfile-$(date '+%Y-%m-%d-%H-%M-%S').gz
+    DUMP_NAME=$(echo "${ENVIRONMENT}" | tr '[:upper:]' '[:lower:]')-sqldumpfile-$(date '+%Y-%m-%d-%H-%M-%S').gz
     gcloud sql export sql ${INSTANCE_NAME} gs://${SOCIETIES_GCP_BUCKET}/${DUMP_NAME} \
                             --database=${DATABASE_NAME}
 }
