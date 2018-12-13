@@ -20,7 +20,7 @@ set_variables(){
             DATABASE_NAME=${STAGING_DATABASE_NAME}
             ENVIRONMENT=${APP_SETTINGS}
             ;;
-        ft-upgrade-design-database-162630016)
+        design)
             APP_SETTINGS="Staging"
             CLOUDSQL_CONNECTION_NAME=${STAGING_CLOUD_SQL_CONNECTION_NAME}
             DATABASE_URL=${DESIGN_DATABASE_URL}

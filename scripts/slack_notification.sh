@@ -47,7 +47,7 @@ declare_env_variables() {
       develop)
         ENVIRONMENT="Staging"
           ;;
-      ft-upgrade-design-database-162630016)
+      design)
         ENVIRONMENT="Design environment"
           ;;
       *)
