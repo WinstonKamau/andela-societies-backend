@@ -33,12 +33,7 @@ set_variables(){
             exit 1
             ;;
     esac
-    echo "APP_SETTINGS: $APP_SETTINGS"
-    echo "CLOUDSQL_CONNECTION_NAME: $CLOUDSQL_CONNECTION_NAME"
-    echo "DATABASE_URL: $DATABASE_URL"
-    echo "INSTANCE_NAME: $INSTANCE_NAME"
-    echo "DATABASE_NAME: $DATABASE_NAME"
-    echo "ENVIRONMENT: $ENVIRONMENT"
+
 }
 
 install_google_cloud_sdk(){
