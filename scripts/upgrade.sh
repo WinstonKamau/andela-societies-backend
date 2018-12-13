@@ -45,9 +45,9 @@ install_google_cloud_sdk(){
 
 authenticate_google_cloud() {
     echo "====> Store Sand authenticate with service account"
-    echo "$GCLOUD_SERVICE_KEY" | base64 --decode > ${HOME}/gcloud-service-key.json
+    echo "$GCLOUD_SERVICE_KEY" | base64 --decode > "${HOME}"/gcloud-service-key.json
     echo "Configuring Google Cloud Sdk"
-    gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+    gcloud auth activate-service-account --key-file="${HOME}"/gcloud-service-key.json
     gcloud --quiet config set project "${GOOGLE_PROJECT_ID}"
 }
 
