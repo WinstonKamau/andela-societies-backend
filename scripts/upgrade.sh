@@ -3,19 +3,37 @@ set -o errexit
 set -o pipefail
 
 set_variables(){
-    if [ "$CIRCLE_BRANCH" == 'master' ]; then
-        APP_SETTINGS="Production"
-        CLOUDSQL_CONNECTION_NAME=${PRODUCTION_CLOUD_SQL_CONNECTION_NAME}
-        DATABASE_URL=${PRODUCTION_DATABASE_URL}
-        INSTANCE_NAME=${PRODUCTION_INSTANCE_NAME}
-        DATABASE_NAME=${PRODUCTION_DATABASE_NAME}
-    else
-        APP_SETTINGS="Staging"
-        CLOUDSQL_CONNECTION_NAME=${STAGING_CLOUD_SQL_CONNECTION_NAME}
-        DATABASE_URL=${STAGING_DATABASE_URL}
-        INSTANCE_NAME=${STAGING_INSTANCE_NAME}
-        DATABASE_NAME=${STAGING_DATABASE_NAME}
-    fi
+    case "$CIRCLE_BRANCH" in
+        master)
+            APP_SETTINGS="Production"
+            CLOUDSQL_CONNECTION_NAME=${PRODUCTION_CLOUD_SQL_CONNECTION_NAME}
+            DATABASE_URL=${PRODUCTION_DATABASE_URL}
+            INSTANCE_NAME=${PRODUCTION_INSTANCE_NAME}
+            DATABASE_NAME=${PRODUCTION_DATABASE_NAME}
+            ENVIRONMENT=${APP_SETTINGS}
+            ;;
+        develop)
+            APP_SETTINGS="Staging"
+            CLOUDSQL_CONNECTION_NAME=${STAGING_CLOUD_SQL_CONNECTION_NAME}
+            DATABASE_URL=${STAGING_DATABASE_URL}
+            INSTANCE_NAME=${STAGING_INSTANCE_NAME}
+            DATABASE_NAME=${STAGING_DATABASE_NAME}
+            ENVIRONMENT=${APP_SETTINGS}
+            ;;
+        design)
+            APP_SETTINGS="Staging"
+            CLOUDSQL_CONNECTION_NAME=${STAGING_CLOUD_SQL_CONNECTION_NAME}
+            DATABASE_URL=${DESIGN_DATABASE_URL}
+            INSTANCE_NAME=${STAGING_INSTANCE_NAME}
+            DATABASE_NAME=${DESIGN_DATABASE_NAME}
+            ENVIRONMENT="Design"
+            ;;
+        *)
+            echo "Err: This branch should not upgrade."
+            exit 1
+            ;;
+    esac
+
 }
 
 install_google_cloud_sdk(){
@@ -27,27 +45,27 @@ install_google_cloud_sdk(){
 
 authenticate_google_cloud() {
     echo "====> Store Sand authenticate with service account"
-    echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
+    echo "$GCLOUD_SERVICE_KEY" | base64 --decode > "${HOME}"/gcloud-service-key.json
     echo "Configuring Google Cloud Sdk"
-    gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-    gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+    gcloud auth activate-service-account --key-file="${HOME}"/gcloud-service-key.json
+    gcloud --quiet config set project "${GOOGLE_PROJECT_ID}"
 }
 
 export_data() {
-    DUMP_NAME=$(echo "${APP_SETTINGS}" | tr '[:upper:]' '[:lower:]')-sqldumpfile-$(date '+%Y-%m-%d-%H-%M-%S').gz
-    gcloud sql export sql ${INSTANCE_NAME} gs://${SOCIETIES_GCP_BUCKET}/${DUMP_NAME} \
-                            --database=${DATABASE_NAME}
+    DUMP_NAME=$(echo "${ENVIRONMENT}" | tr '[:upper:]' '[:lower:]')-sqldumpfile-$(date '+%Y-%m-%d-%H-%M-%S').gz
+    gcloud sql export sql "${INSTANCE_NAME}" gs://"${SOCIETIES_GCP_BUCKET}"/"${DUMP_NAME}" \
+                            --database="${DATABASE_NAME}"
 }
 
 
 authorize_docker() {
     echo "====> Store Sand authenticate with service account"
-    echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/gcloud-service-key.json
+    echo "$GCLOUD_SERVICE_KEY" | base64 --decode > "${HOME}"/gcloud-service-key.json
 
     echo "====> Login to docker registry"
 
 
-    docker login -u _json_key -p "$(cat ${HOME}/gcloud-service-key.json)" https://gcr.io
+    docker login -u _json_key -p "$(cat "${HOME}"/gcloud-service-key.json)" https://gcr.io
 }
 
 logout_docker_google_cloud() {
