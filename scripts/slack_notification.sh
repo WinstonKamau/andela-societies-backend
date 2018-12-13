@@ -48,7 +48,7 @@ declare_env_variables() {
         ENVIRONMENT="Staging"
           ;;
       ft-upgrade-design-database-162630016)
-        ENVIRONMENT="Design"
+        ENVIRONMENT="Design environment"
           ;;
       *)
           echo "Err: Wrong branch provided"
