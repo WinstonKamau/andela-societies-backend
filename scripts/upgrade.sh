@@ -3,19 +3,33 @@ set -o errexit
 set -o pipefail
 
 set_variables(){
-    if [ "$CIRCLE_BRANCH" == 'master' ]; then
-        APP_SETTINGS="Production"
-        CLOUDSQL_CONNECTION_NAME=${PRODUCTION_CLOUD_SQL_CONNECTION_NAME}
-        DATABASE_URL=${PRODUCTION_DATABASE_URL}
-        INSTANCE_NAME=${PRODUCTION_INSTANCE_NAME}
-        DATABASE_NAME=${PRODUCTION_DATABASE_NAME}
-    else
-        APP_SETTINGS="Staging"
-        CLOUDSQL_CONNECTION_NAME=${STAGING_CLOUD_SQL_CONNECTION_NAME}
-        DATABASE_URL=${STAGING_DATABASE_URL}
-        INSTANCE_NAME=${STAGING_INSTANCE_NAME}
-        DATABASE_NAME=${STAGING_DATABASE_NAME}
-    fi
+    case "$CIRCLE_BRANCH" in
+        master)
+            APP_SETTINGS="Production"
+            CLOUDSQL_CONNECTION_NAME=${PRODUCTION_CLOUD_SQL_CONNECTION_NAME}
+            DATABASE_URL=${PRODUCTION_DATABASE_URL}
+            INSTANCE_NAME=${PRODUCTION_INSTANCE_NAME}
+            DATABASE_NAME=${PRODUCTION_DATABASE_NAME}
+            ;;
+        develop)
+            APP_SETTINGS="Staging"
+            CLOUDSQL_CONNECTION_NAME=${STAGING_CLOUD_SQL_CONNECTION_NAME}
+            DATABASE_URL=${STAGING_DATABASE_URL}
+            INSTANCE_NAME=${STAGING_INSTANCE_NAME}
+            DATABASE_NAME=${STAGING_DATABASE_NAME}
+            ;;
+        ft-upgrade-design-database-162630016)
+            APP_SETTINGS="Staging"
+            CLOUDSQL_CONNECTION_NAME=${STAGING_CLOUD_SQL_CONNECTION_NAME}
+            DATABASE_URL=${DESIGN_DATABASE_URL}
+            INSTANCE_NAME=${STAGING_INSTANCE_NAME}
+            DATABASE_NAME=${DESIGN_DATABASE_NAME}
+            ;;
+        *)
+            echo "Err: This branch should not upgrade."
+            exit 1
+            ;;
+    esac
 }
 
 install_google_cloud_sdk(){

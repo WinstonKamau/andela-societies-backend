@@ -75,21 +75,22 @@ workflows:
   version: 2
   test_and_deploy:
     jobs:
-      - test
+      # - test
       - upgrade-database:
-          requires:
-            - test
+          # requires:
+          #   - test
           filters:
             branches:
               only:
                 - develop
                 - master
-      - deploy:
-          requires:
-            - upgrade-database
-          filters:
-            branches:
-              only:
-                - develop
-                - master
-                - design
+                - ft-upgrade-design-database-162630016
+      # - deploy:
+      #     requires:
+      #       - upgrade-database
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - master
+      #           - design
