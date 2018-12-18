@@ -59,7 +59,7 @@ deploy_to_kubernetes(){
     echo "====> Deploying ${IMAGE} to ${DEPLOYMENT_NAME} in ${ENVIRONMENT} environment"
 
 
-    kubectl set image deployment/${DEPLOYMENT_NAME} backend=${IMAGE} -n "${ENVIRONMENT}"
+    # kubectl set image deployment/${DEPLOYMENT_NAME} backend=${IMAGE} -n "${ENVIRONMENT}"
 
     if [ "$?" == "0" ]; then
         echo "Deployment completed successfully"
