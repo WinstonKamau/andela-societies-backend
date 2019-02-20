@@ -55,7 +55,7 @@ declare_env_variables() {
         develop-v2)
           ENVIRONMENT="Staging V2"
             ;;
-        master-v2)
+        master-V2)
           ENVIRONMENT="Production V2"
             ;;
         *)
